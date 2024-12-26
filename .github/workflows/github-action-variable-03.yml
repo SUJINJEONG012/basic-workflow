@@ -1,32 +1,11 @@
-name: Test GitHub Var
+name: Test context Vars
+run-name: Run Vars context test
 on:
   workflow_dispatch:
-env:
-  mascot: Mona
-  super_duper_var: totally_awesome
-
+  
 jobs:
-  windows_job:
-    runs-on: windows-latest
-    steps:
-      - name: Echo default mascot
-        run: echo "Hi ${{ env.mascot }}"  # Hi Mona
-
-      - name: Override mascot variable
-        run: echo "Hi ${{ env.mascot }}"  # Hi Octocat
-        env:
-          mascot: Octocat
-
-      - name: Use repository variable
-        run: echo "Repository Variable JOB_NAME: ${{ vars.JOB_NAME }}"  # var-test
-
-  linux_job:
+  vars-context-test:
     runs-on: ubuntu-latest
-    env:
-      mascot: Tux
     steps:
-      - name: Echo linux mascot
-        run: echo "Hi ${{ env.mascot }}"  # Hi Tux
-
-      - name: Use repository variable
-        run: echo "Repository Variable JOB_NAME: ${{ vars.JOB_NAME }}"  # var-test
+      - name: "Say Hello VAR_TEST"
+        run: echo "Hello ${{ vars.VARS_TEST }}"  # Hi Mona
