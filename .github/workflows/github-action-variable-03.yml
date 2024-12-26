@@ -2,30 +2,31 @@ name: Test GitHub Var
 on:
   workflow_dispatch:
 env:
-  # Setting an environment variable with the value of a configuration variable
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+  mascot: Mona
+  super_duper_var: totally_awesome
 
 jobs:
-  display-variables:
-    name: ${{ vars.JOB_NAME }}
-    # You can use configuration variables with the `vars` context for dynamic jobs
-    if: ${{ vars.USE_VARIABLES == 'true' }}
-    runs-on: ${{ vars.RUNNER }}
-    environment: ${{ vars.ENVIRONMENT_STAGE }}
+  windows_job:
+    runs-on: windows-latest
     steps:
-    - name: Use variables
-      run: |
-        echo "repository variable : $REPOSITORY_VAR"
-        echo "organization variable : $ORGANIZATION_VAR"
-        echo "overridden variable : $OVERRIDE_VAR"
-        echo "variable from shell environment : $env_var"
-      env:
-        REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
-        ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
-        OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
-        
-    - name: ${{ vars.HELLO_WORLD_STEP }}
-      if: ${{ vars.HELLO_WORLD_ENABLED == 'true' }}
-      uses: actions/hello-world-javascript-action@main
-      with:
-        who-to-greet: ${{ vars.GREET_NAME }}
+      - name: Echo default mascot
+        run: echo "Hi ${{ env.mascot }}"  # Hi Mona
+
+      - name: Override mascot variable
+        run: echo "Hi ${{ env.mascot }}"  # Hi Octocat
+        env:
+          mascot: Octocat
+
+      - name: Use repository variable
+        run: echo "Repository Variable JOB_NAME: ${{ vars.JOB_NAME }}"  # var-test
+
+  linux_job:
+    runs-on: ubuntu-latest
+    env:
+      mascot: Tux
+    steps:
+      - name: Echo linux mascot
+        run: echo "Hi ${{ env.mascot }}"  # Hi Tux
+
+      - name: Use repository variable
+        run: echo "Repository Variable JOB_NAME: ${{ vars.JOB_NAME }}"  # var-test
