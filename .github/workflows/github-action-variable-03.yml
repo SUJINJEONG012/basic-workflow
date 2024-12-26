@@ -1,4 +1,4 @@
-name: Test context Vars
+name: Test Vars context Vars
 run-name: Run Vars context test
 on:
   workflow_dispatch:
